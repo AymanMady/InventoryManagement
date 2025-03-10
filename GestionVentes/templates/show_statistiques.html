@@ -1,0 +1,168 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+  Voir Statistiques
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-graph text-success">
+                    </i>
+                </div>
+                <div>
+                    <div class="page-title-subheading"><h4><b>{{ etablissements.nom_etablissement }}</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <a href="{% url 'statistiques' %}" class="mt-2 btn btn-primary">
+                        <i class="fa fa-fw" aria-hidden="true"></i> Retour
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div class="app-page-title">
+      <div class="row">
+            <div class="col-md-6 col-xl-4">
+                <div class="card mb-3 widget-content bg-arielle-smile">
+                    <div class="widget-content-wrapper text-white">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Total de Matériels</div>
+                            <div class="widget-subheading"></div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-white"><span>{{ total_materiel }}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="card mb-3 widget-content bg-grow-early">
+                    <div class="widget-content-wrapper text-white">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Total d'Employés</div>
+                            <div class="widget-subheading"></div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-white"><span>{{ total_employees }}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="col-md-6 col-xl-4">
+                <div class="card mb-3 widget-content bg-midnight-bloom">
+                    <div class="widget-content-wrapper text-white">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Total d'Emplacements</div>
+                            <div class="widget-subheading"></div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-white"><span>{{ total_emplacement }}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="row">
+      <div class="col-md-6">
+          <div class="main-card mb-3 card">
+              <div class="card-body"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <h5 class="card-title">État des Matériels</h5>
+                  <canvas id="myChart1" width="400" height="300" ></canvas>
+              </div>
+          </div>
+      </div>
+      <script>
+        var ctx1 = document.getElementById('myChart1').getContext('2d');
+        var bonEtatCount = {{ bon_etat_count }};
+        var hsCount = {{ hs_count }};
+        var neuveCount = {{ neuve_count }};
+
+        var myChart1 = new Chart(ctx1, {
+          type: 'pie',
+          data: {
+            labels: ['Bon état', 'Hors service', 'Neuve'],
+            datasets: [{
+              label: 'Produits',
+              data: [bonEtatCount, hsCount, neuveCount],
+              backgroundColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+      </script>
+        <div class="col-md-6">
+          <div class="main-card mb-3 card">
+              <div class="card-body"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <h5 class="card-title">Pourcentage des Matériels dans Chaque Emplacement</h5>
+                  <canvas id="myChart3" width="400" height="300" ></canvas>
+              </div>
+          </div>
+      </div>
+
+    <script>
+      var ctx3 = document.getElementById('myChart3').getContext('2d');
+      var emplacementLabels = [
+        {% for data in emplacement_data %}
+            "{{ data.designation }}",
+        {% endfor %}
+      ];
+      var emplacementPercentages = [
+        {% for data in emplacement_data %}
+          {{ data.percentage }},
+        {% endfor %}
+      ];
+
+      var myChart3 = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+          labels: emplacementLabels,
+          datasets: [{
+            label: 'Pourcentage des Matériels',
+            data: emplacementPercentages,
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    </script>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+  Employees
+{% endblock %}
+
+{% block content %}
+  <div class="app-main__inner">
+    <div class="app-page-title">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="main-card mb-3 card">
+            <div class="card-body">
+              <div style="display: flex ; justify-content: space-between;">
+                <div>
+                  <h5 class="card-title">Liste des employees </h5>
+                </div>
+                <div style="display: flex ; justify-content: space-between;">
+                  <div style="display: flex ; justify-content: space-between;" >
+                    <input class="form-control"   type="text" id="myInput" onkeyup="myFunction()" placeholder="Taper pour rechercher..">
+                    <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                    <a class="search-btn" href="#"></a>
+                  </div>
+                  <div>
+                    <a href="{% url 'add_employe' %}" class="mb-2 mr-2 btn btn-info"><i class="fa fa-fw" aria-hidden="true" title="Copier pour utiliser plus-square"></i> Ajouter </a>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <table class="mb-0 table" id="myTable">
+                <thead>
+                  <tr>
+                    <th>Matricule</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>date de naissansse</th>
+                    <th>Lieu de naissansse</th>
+                    <th>Grade</th>
+                    <th colspan="2" >Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in employes %}
+                  <tr>
+                    <td>{{i.matricule}}</td>
+                    <td>{{i.nom}}</td>
+                    <td>{{i.prenom}}</td>
+                    <td>{{i.date_naiss}}</td>
+                    <td>{{i.lieu_naiss}}</td>
+                    <td>{{i.grade}}</td>
+                    <td>
+                      <a class='button' href="/edit_employe/{{i.id}}">Modifier</a>
+                    </td>
+                    <td>
+                      <a class='button' href="/delete_employe/{{i.id}}">Supprimer</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function myFunction() {
+      // Déclarer les variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+
+      // Parcourir toutes les lignes du tableau et masquer celles qui ne correspondent pas à la requête de recherche
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        td1 = tr[i].getElementsByTagName("td")[1];
+        td2 = tr[i].getElementsByTagName("td")[2];
+        td3 = tr[i].getElementsByTagName("td")[3];
+        td4 = tr[i].getElementsByTagName("td")[4];
+        td5 = tr[i].getElementsByTagName("td")[5];
+
+        if (td || td1 || td2 || td3 || td4 || td5) {
+          txtValue = td.textContent || td.innerText;
+          txtValue1 = td1.textContent || td1.innerText;
+          txtValue2 = td2.textContent || td2.innerText;
+          txtValue3 = td3.textContent || td3.innerText;
+          txtValue4 = td4.textContent || td4.innerText;
+          txtValue5 = td5.textContent || td5.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue1.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1 || txtValue3.toUpperCase().indexOf(filter) > -1 || txtValue4.toUpperCase().indexOf(filter) > -1 || txtValue5.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
+{% endblock %}

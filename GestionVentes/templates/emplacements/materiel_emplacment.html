@@ -1,0 +1,34 @@
+<title>
+  Liste des Matériels dans le {{ emplacement.designation }}
+</title>
+<body>
+<center>
+ <h1>Liste des Matériels dans le {{ emplacement.designation }}</h1>
+</center>
+<br>
+<table border="1" cellspacing="0" cellpadding="8" align="center">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Type</th>
+      <th>Désignation</th>
+      <th>Marque</th>
+      <th>Caractéristique</th>
+      <th>État</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in materiels %}
+    <tr>
+      <td>{{i.code}}</td>
+      <td>{{i.type}}</td>
+      <td>{{i.designation}}</td>
+      <td>{{i.marque}}</td>
+      <td>{{i.caracteristique}}</td>
+      <td>{{i.etat}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</body>

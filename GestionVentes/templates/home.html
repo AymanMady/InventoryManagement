@@ -1,0 +1,144 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+  Accueil
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner">
+  <div class="app-page-title">
+    <div class="row">
+      <div class="col-md-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-arielle-smile">
+          <div class="widget-content-wrapper text-white">
+            <div class="widget-content-left">
+              <div class="widget-heading">Total de Matériels</div>
+              <div class="widget-subheading"></div>
+            </div>
+            <div class="widget-content-right">
+              <div class="widget-numbers text-white"><span>{{ total_materiel }}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-grow-early">
+          <div class="widget-content-wrapper text-white">
+            <div class="widget-content-left">
+              <div class="widget-heading">Total d'Employés</div>
+              <div class="widget-subheading"></div>
+            </div>
+            <div class="widget-content-right">
+              <div class="widget-numbers text-white"><span>{{ total_employees }}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-midnight-bloom">
+          <div class="widget-content-wrapper text-white">
+            <div class="widget-content-left">
+              <div class="widget-heading">Total d'Emplacements</div>
+              <div class="widget-subheading"></div>
+            </div>
+            <div class="widget-content-right">
+              <div class="widget-numbers text-white"><span>{{ total_emplacement }}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="main-card mb-3 card">
+          <div class="card-body">
+            <h5 class="card-title">État des Matériels</h5>
+            <canvas id="monGraphique1" width="400" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+      <script>
+        var ctx = document.getElementById('monGraphique1').getContext('2d');
+        var compteBonEtat = {{ bon_etat_count }};
+        var compteHS = {{ hs_count }};
+        var compteNeuve = {{ neuve_count }};
+
+        var monGraphique1 = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['Bon état', 'Hors service', 'Neuve'],
+            datasets: [{
+              label: 'Produits',
+              data: [compteBonEtat, compteHS, compteNeuve],
+              backgroundColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+      </script>
+      <div class="col-md-6">
+        <div class="main-card mb-3 card">
+          <div class="card-body">
+            <h5 class="card-title">Pourcentage de Matériels dans Chaque Direction</h5>
+            <canvas id="monGraphique2" width="600" height="400"></canvas>
+          </div>
+        </div>
+      </div>
+      <script>
+        var ctx2 = document.getElementById('monGraphique2').getContext('2d');
+        var etiquettesEtablissements = [
+          {% for data in establishment_data %}
+            "{{ data.establishment }}",
+          {% endfor %}
+        ];
+        var pourcentagesEtablissements = [
+          {% for data in establishment_data %}
+            {{ data.percentage }},
+          {% endfor %}
+        ];
+
+        var monGraphique2 = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: etiquettesEtablissements,
+            datasets: [{
+              label: 'Pourcentage des Matériels',
+              data: pourcentagesEtablissements,
+              backgroundColor: 'rgba(75, 192, 192, 0.5)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+      </script>
+    </div>
+  </div>
+</div>
+{% endblock %}

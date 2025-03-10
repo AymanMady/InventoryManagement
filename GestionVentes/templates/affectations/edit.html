@@ -1,0 +1,63 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+  Modifier affectation
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="tab-content">
+        <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <h5 class="card-title">Modifier affectation</h5>
+                    <form method="post" action="/update_affectation/{{ affectation.id }}">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col-md-10">
+                                <div class="position-relative form-group">
+                                    <label>Materiel :</label>
+                                    <select class="form-control" name="{{ form.id_materiel.name }}" required>
+                                        <option value="" disabled>Select Materiel</option>
+                                        {% for materiel in materiels %}
+                                        <option value="{{ materiel.id }}"
+                                            {% if materiel.id == affectation.id_materiel.id %}selected{% endif %}>
+                                            {{ materiel.code }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="position-relative form-group">
+                                    <label>Emplacement:</label>
+                                    <select class="form-control" name="{{ form.id_emplacement.name }}" required>
+                                        <option value="" disabled>Select Emplacement</option>
+                                        {% for emplacement in emplacements %}
+                                        <option value="{{ emplacement.id }}"
+                                            {% if emplacement.id == affectation.id_emplacement.id %}selected{% endif %}>
+                                            {{ emplacement.designation }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="position-relative form-group">
+                                    <label>Date:</label>
+                                    <input type="date" name="{{ form.date.name }}" class="form-control"
+                                        value="{{ affectation.date|date:'Y-m-d' }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; width: 750px;">
+                            <button class="mt-2 btn btn-primary">Enregistrer</button>
+                            <a href="{% url 'affectation' %}" class="mt-2 btn btn-primary">
+                                Retour
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

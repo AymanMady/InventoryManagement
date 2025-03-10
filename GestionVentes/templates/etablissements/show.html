@@ -1,0 +1,47 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+  Matériels
+{% endblock %}
+
+{% block content %}
+
+  <div class="app-main__inner">
+    <div class="app-page-title">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="main-card mb-3 card">
+            <div class="card-body">
+              <div style="display: flex ; justify-content: space-between;">
+                <div>
+                  <h4><b>Direction : {{ etablissements.nom_etablissement }}</b></h4>
+                </div>
+              </div>
+              <br>
+
+              <table class="container" border="1" width="40%">
+                <tr class="tt">
+                  {% for emplacement in emplacements %}
+                    <td class="tt"><h5><b>Emplacement : {{ emplacement.designation }}</b></h5></td>
+                </tr>
+                <tr>
+                  <td class="tt">
+                    <ul>
+                      {% for materiel in materiels %}
+                        {% if materiel.id_emplacement == emplacement %}
+                          <li>Code du matériel : {{ materiel.id_materiel.code }} ===> Type : {{ materiel.id_materiel.type }}</li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </td>
+                </tr>
+                  {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

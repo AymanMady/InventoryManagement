@@ -1,0 +1,63 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+  Ajouter materiel
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner" xmlns="http://www.w3.org/1999/html">
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body"><h5 class="card-title">Ajouter un matériel</h5>
+                                    <form method="post" action="/get_add_materiel/">
+                                                {% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="col-md-2">
+                                                    <div class="position-relative form-group"><label  class="">Code</label><input name="code"  type="text" class="form-control"></div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="position-relative form-group"><label  class="">Type</label><input name="type"  type="text" class="form-control"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="position-relative form-group"><label  class="">Designation</label><input name="designation"  type="text" class="form-control"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <div class="position-relative form-group"><label  class="">Marque</label><input name="marque"  type="text" class="form-control"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="position-relative form-group">
+                                                        <label  class="">Etat</label>
+                                                        <select class="form-control" name="etat">
+                                                            <option selected disabled> Les Etats </option>
+                                                            <option>HS</option>
+                                                            <option>Bon etat</option>
+                                                            <option>Neuve</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12">
+                                                    <div class="position-relative form-group"><label  class="">Caracteristiques</label><textarea name="caracteristique" id="exampleText" class="form-control"></textarea></div>
+                                                </div>
+                                            </div>
+                                        <div style="display: flex ; justify-content: space-between ; ">
+                                            <button class="mt-2 btn btn-primary">Enregistrer</button>
+                                            <a href="{% url 'materiel' %}"class="mt-2 btn btn-primary">
+                                                Retour
+                                            </a>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}
+
+
+<button type="button" class="btn btn-outline-success mr-1 mb-1" id="type-success">Success</button>
